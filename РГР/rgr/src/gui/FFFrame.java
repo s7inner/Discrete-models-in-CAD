@@ -16,7 +16,6 @@ public class FFFrame extends JFrame {
     Font font = new Font("TimesRoman", Font.PLAIN, 18);
     JButton moveVertexOperation =  new JButton("Move vertex");;
     JButton algorithmNextIteration = new JButton("The next iteration");
-    JButton algorithmExecute = new JButton("Execute the algorithm");
     JButton setSourceSink = new JButton("Set Source/Sink");
     JLabel sourceLabel = new JLabel("Source:");
     JLabel sinkLabel = new JLabel("Sink:");
@@ -77,7 +76,6 @@ public class FFFrame extends JFrame {
 
         toolPanel.add(moveVertexOperation);
         toolPanel.add(algorithmNextIteration);
-        toolPanel.add(algorithmExecute);
 
         toolPanel.add(sourceLabel);
         sourceField.setPreferredSize(new Dimension(35, 30));
