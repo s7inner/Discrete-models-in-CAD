@@ -1,7 +1,7 @@
 package gui;
 
 import algorithms.FordFalkersonAlgorithm;
-import utils.ArrowPanel;
+
 import utils.GraphOperation;
 import utils.GraphVertex;
 import utils.MaxFlowAndPathData;
@@ -30,9 +30,7 @@ public class FFComponent extends JPanel {
     private List<GraphVertex> vertices;
     public GraphVertex lastSelectedVertex = null;
     private GraphVertex selectedVertex = null;
-    //    public Thread algorithmDrawTread;
     public GraphOperation operation;
-    //    public int[][] currentMinFlow;
     public int source;
     public int sink;
     public int iterationStep = 0;
@@ -151,13 +149,6 @@ public class FFComponent extends JPanel {
 
                     //малювання ребер
                     g2d.drawLine(from.x, from.y, to.x, to.y);
-
-                    //draw arrows between vertices
-                    ArrowPanel arrow = new ArrowPanel(new Point(from.x, from.y), new Point(to.x, to.y));
-
-//                    // Рисуємо стрілку на кінці лінії
-//                    arrow.drawArrow(arrow.start, arrow.end, 30, VERTEX_SIZE, g2d);
-
 
                     //draw text in center line
                     Point location = new Point((from.x + to.x) / 2, (from.y + to.y) / 2);
