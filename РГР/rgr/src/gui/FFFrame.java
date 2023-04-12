@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 public class FFFrame extends JFrame {
     Font font = new Font("TimesRoman", Font.PLAIN, 18);
-//    JButton openFile = new JButton("Chose File");
     JButton moveVertexOperation =  new JButton("Move vertex");;
     JButton algorithmNextIteration = new JButton("The next iteration");
     JButton algorithmExecute = new JButton("Execute the algorithm");
@@ -24,9 +23,7 @@ public class FFFrame extends JFrame {
     JTextField sourceField = new JTextField();
     JTextField sinkField = new JTextField();
     JPanel toolPanel;
-    JPanel vertexTools;
-    JPanel edgeTools;
-    JPanel fileTools;
+
     public File file;
     FFComponent comp;
     FordFalkersonAlgorithm algorithm;
@@ -34,8 +31,6 @@ public class FFFrame extends JFrame {
         this.algorithm = algorithm;
         setSize(width,height);
         setResizable(false);
-
-
 
         moveVertexOperation.addActionListener(new ActionListener() {
             @Override
@@ -57,39 +52,14 @@ public class FFFrame extends JFrame {
             }
         });
 
-//        openFile.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                JFileChooser fileChooser = new JFileChooser();
-//                int option = fileChooser.showOpenDialog(null);
-//                if (option == JFileChooser.APPROVE_OPTION) {
-//                    File file = fileChooser.getSelectedFile();
-//                    System.out.println("Selected file: " + file.getAbsolutePath());
-//
-//                    try {
-//                        GraphLoader gl = new GraphLoader(file, true);
-//                    } catch (FileNotFoundException ex) {
-//                        throw new RuntimeException(ex);
-//                    }
-//
-//                }
-//            }
-//        });
-//        algorithmExecute.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-////                comp.algorithm.maxFlowItaration();
-//                comp.iterationStep++;
-//                comp.repaint();
-//            }
-//        });
         algorithmNextIteration.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //                comp.algorithm.maxFlowItaration();
                 comp.iterationStep++;
                 comp.iterationStep=comp.iterationStep%comp.algorithm.pathData.size();
                 comp.repaint();
+
+
             }
         });
 
@@ -103,17 +73,7 @@ public class FFFrame extends JFrame {
         comp.setMinimumSize(new Dimension(200,200));
         add(comp);
 
-
         toolPanel = new JPanel();
-        var gridLayout = new GridLayout(3,3,5,5);
-
-//        toolPanel.setLayout(gridLayout);
-
-//        toolPanel.add(selectStart);
-//        toolPanel.add(selectEnd);
-
-
-//        toolPanel.add(openFile);
 
         toolPanel.add(moveVertexOperation);
         toolPanel.add(algorithmNextIteration);
@@ -129,7 +89,6 @@ public class FFFrame extends JFrame {
         toolPanel.add(sinkField);
 
         toolPanel.add(setSourceSink);
-
         add(toolPanel,BorderLayout.NORTH);
 
         setVisible(true);
