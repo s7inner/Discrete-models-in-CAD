@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 
 public class App
 {
-    static File file = new File("src/data/size_5.txt");
+    static File file = new File("src/data/size_6.txt");
 
     public static void main( String[] args )
     {
