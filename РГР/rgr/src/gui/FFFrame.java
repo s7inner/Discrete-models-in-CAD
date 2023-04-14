@@ -1,7 +1,8 @@
 package gui;
 
-import algorithms.FordFalkersonAlgorithm;
+
 import algorithms.GraphLoader;
+import algorithms.MaxFlow;
 import utils.GraphOperation;
 
 import javax.swing.*;
@@ -25,8 +26,8 @@ public class FFFrame extends JFrame {
 
     public File file;
     FFComponent comp;
-    FordFalkersonAlgorithm algorithm;
-    public FFFrame(int width, int height, File file, FordFalkersonAlgorithm algorithm) throws FileNotFoundException {
+    MaxFlow algorithm;
+    public FFFrame(int width, int height, File file, MaxFlow algorithm, GraphLoader graphLoader) throws FileNotFoundException {
         this.algorithm = algorithm;
         setSize(width,height);
         setResizable(false);
@@ -44,8 +45,12 @@ public class FFFrame extends JFrame {
                 if (!sourceField.getText().isEmpty() && !sinkField.getText().isEmpty()) {
                     comp.algorithm.source = Integer.parseInt(sourceField.getText());
                     comp.algorithm.sink = Integer.parseInt(sinkField.getText());
-                    comp.algorithm = new FordFalkersonAlgorithm(comp.algorithm.graph, comp.algorithm.source, comp.algorithm.sink);
-                    comp.algorithm.maxFlow();
+                    try {
+                        comp.algorithm = new MaxFlow(graphLoader.getAdjacencyMatrix(),graphLoader.getAdjacencyMatrix(), comp.algorithm.source, comp.algorithm.sink);
+                    } catch (FileNotFoundException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    comp.algorithm.findMaxFlow();
                     comp.repaint();
                 }
             }

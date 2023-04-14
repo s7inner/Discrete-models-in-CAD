@@ -1,7 +1,7 @@
 package gui;
 
-import algorithms.FordFalkersonAlgorithm;
 
+import algorithms.MaxFlow;
 import utils.GraphOperation;
 import utils.GraphVertex;
 import utils.MaxFlowAndPathData;
@@ -35,9 +35,9 @@ public class FFComponent extends JPanel {
     public int sink;
     public int iterationStep = 0;
 
-    public FordFalkersonAlgorithm algorithm;
+    public MaxFlow algorithm;
 
-    public FFComponent(Map<Integer, SortedSet<Integer>> adjacencyList, List<GraphVertex> vertices, FordFalkersonAlgorithm algorithm) {
+    public FFComponent(Map<Integer, SortedSet<Integer>> adjacencyList, List<GraphVertex> vertices, MaxFlow algorithm) {
         this.adjacencyList = adjacencyList;
         this.vertices = new ArrayList<>();
         this.algorithm = algorithm;

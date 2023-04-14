@@ -1,5 +1,5 @@
-import algorithms.FordFalkersonAlgorithm;
 import algorithms.GraphLoader;
+import algorithms.MaxFlow;
 import gui.FFFrame;
 
 import java.io.File;
@@ -13,15 +13,17 @@ public class App
     {
         try {
             GraphLoader loader = new GraphLoader(file,true);
-            FordFalkersonAlgorithm fordFalkersonAlgorithm =
-                    new FordFalkersonAlgorithm(loader.getAdjacencyMatrix(), 0, 4);
-            System.out.println("\nMaximum flow:\t" + fordFalkersonAlgorithm.maxFlow());
+            MaxFlow maxFlow =
+                    new MaxFlow(loader.getAdjacencyMatrix(),loader.getAdjacencyMatrix(), loader.source, loader.sink);
+            System.out.println("\nMaximum flow:\t" + maxFlow.findMaxFlow());
 
             //--------------------------------------------------
-            FFFrame frame = new FFFrame(1200,720, file,fordFalkersonAlgorithm);
+            FFFrame frame = new FFFrame(1200,720, file,maxFlow,loader );
 
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+
+
     }
 }

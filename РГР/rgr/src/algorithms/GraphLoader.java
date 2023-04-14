@@ -5,27 +5,35 @@ import java.io.FileNotFoundException;
 import java.util.*;
 public class GraphLoader {
     public int size;
-    private int [][] adjacencyMatrix;
-    public GraphLoader(File file,boolean printGraphToConsole) throws FileNotFoundException {
+
+    public int source;
+    public int sink;
+    public File file;
+    public boolean printGraphToConsole;
+//    private int [][] adjacencyMatrix;
+    public GraphLoader(File file,boolean printGraphToConsole){
+        this.file = file;
+        this.printGraphToConsole = printGraphToConsole;
+    }
+    public int[][] getAdjacencyMatrix() throws FileNotFoundException {
         Scanner fileReader = new Scanner(file);
         size = fileReader.nextInt();
-        if(printGraphToConsole)
-            System.out.println("size:\t"+size);
-        adjacencyMatrix = new int[size][size];
+
+        int[][] matrix = new int[size][size];
+
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                adjacencyMatrix[i][j] = fileReader.nextInt();
-                if(printGraphToConsole)
-                    System.out.print(adjacencyMatrix[i][j]+"\t");
+                matrix[i][j] = fileReader.nextInt();
+
             }
-            if(printGraphToConsole)
-                System.out.println();
         }
+        source = fileReader.nextInt();
+        sink = fileReader.nextInt();
+
+        return matrix;
     }
-    public int[][] getAdjacencyMatrix() {
-        return adjacencyMatrix;
-    }
-    public Map<Integer, SortedSet<Integer>> getAdjacencyList() {
+
+    public Map<Integer, SortedSet<Integer>> getAdjacencyList() throws FileNotFoundException {
         return convertToMap(getAdjacencyMatrix());
     }
     public static Map<Integer, SortedSet<Integer>> convertToMap(int[][] arr) {

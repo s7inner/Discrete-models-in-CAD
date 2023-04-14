@@ -1,80 +1,92 @@
 package algorithms;
 
+import utils.MaxFlowAndPathData;
+
 import java.util.*;
 
-public class MaxFlowAlgorithm {
+public class MaxFlow {
+    public int[][] graph;
+    public int[][] residualGraph;
+    public int source;
+    public int sink;
+    public int[] parent;
+    public boolean[] visited;
+    public List<MaxFlowAndPathData> pathData = new LinkedList<>();
+    public int maxFlow = 0;
 
-    // Returns true if there is a path from source to sink in the residual graph.
-    public static boolean bfs(int[][] residualGraph, int source, int sink, int[] parent) {
-        int n = residualGraph.length;
-        boolean[] visited = new boolean[n];
-        Arrays.fill(visited, false);
 
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(source);
-        visited[source] = true;
-        parent[source] = -1;
-
-        while (!queue.isEmpty()) {
-            int u = queue.poll();
-
-            for (int v = 0; v < n; v++) {
-                if (!visited[v] && residualGraph[u][v] > 0) {
-                    queue.add(v);
-                    parent[v] = u;
-                    visited[v] = true;
-                }
-            }
-        }
-
-        return visited[sink];
+    public MaxFlow(int[][] graph,int[][] residualGraph, int source, int sink) {
+        this.graph = graph;
+        this.residualGraph = residualGraph;
+        this.parent = new int[residualGraph.length];
+        this.visited = new boolean[residualGraph.length];
+        this.source = source;
+        this.sink = sink;
     }
 
-    // Returns the maximum flow from source to sink in the given graph.
-    public static int maxFlow(int[][] graph, int source, int sink) {
-        int n = graph.length;
-
-        // Initialize the residual graph as the original graph.
-        int[][] residualGraph = new int[n][n];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                residualGraph[i][j] = graph[i][j];
-            }
-        }
-
-        // Initialize the parent array for the BFS traversal.
-        int[] parent = new int[n];
-
-        int maxFlow = 0;
-
-        // While there is a path from source to sink in the residual graph.
-        while (bfs(residualGraph, source, sink, parent)) {
+    public int findMaxFlow() {
+        while (bfs()) {
             int pathFlow = Integer.MAX_VALUE;
-
-            // Find the maximum flow through the path found by BFS.
-            for (int v = sink; v != source; v = parent[v]) {
-                int u = parent[v];
-                pathFlow = Math.min(pathFlow, residualGraph[u][v]);
+            int current = sink;
+            while (current != source) {
+                int previous = parent[current];
+                pathFlow = Math.min(pathFlow, residualGraph[previous][current]);
+                current = previous;
             }
+            current = sink;
             String pathString = "";
+            LinkedList linkedListPath = new LinkedList<>();
 
-            // Update the residual capacities and reverse edges along the path.
-            for (int v = sink; v != source; v = parent[v]) {
-                int u = parent[v];
-                pathString += (v + "->" + u + "\t");
+            while (current != source) {
+                int previous = parent[current];
 
-                residualGraph[u][v] -= pathFlow;
-                residualGraph[v][u] += pathFlow;
+                //add path vertexs to list
+                linkedListPath.add(current);
+                pathString += (current + "->" + previous + "\t");
+
+                residualGraph[previous][current] -= pathFlow;
+                residualGraph[current][previous] += pathFlow;
+                current = previous;
             }
+            linkedListPath.add(0);
+
+            if (pathData.size() == 0) {
+                pathData.add(new MaxFlowAndPathData(pathFlow, linkedListPath, graph.length));
+            } else {
+                pathData.add(new MaxFlowAndPathData(pathFlow, linkedListPath, pathData.get(pathData.size()-1).currentMinFlow.clone()));
+            }
+
             System.out.print("Maximum path flow:\t" + pathFlow);
 //            System.out.println("\t||\t"+incrementString(pathString));
             System.out.println("\t||\t" + pathString);
-
-            // Add path flow to overall flow.
             maxFlow += pathFlow;
         }
-
-        // Return the maximum flow.
         return maxFlow;
+    }
+
+    private boolean bfs() {
+        Arrays.fill(visited, false);
+        Queue<Integer> queue = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return residualGraph[parent[o2]][o2] - residualGraph[parent[o1]][o1];
+            }
+        });
+        queue.add(source);
+        visited[source] = true;
+        while (!queue.isEmpty()) {
+            int current = queue.poll();
+            if (current == sink) {
+                return true;
+            }
+            for (int i = 0; i < residualGraph.length; i++) {
+                if (!visited[i] && residualGraph[current][i] > 0) {
+                    visited[i] = true;
+                    parent[i] = current;
+                    queue.add(i);
+                }
+            }
+        }
+        return false;
     }
 }
